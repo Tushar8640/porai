@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(npm --version)",
-      "Bash(npx --version)"
+      "Bash(npx --version)",
+      "Bash(npx shadcn@latest add card table input select dialog badge form dropdown-menu sheet avatar separator tabs skeleton sonner --yes)",
+      "Bash(npx shadcn@latest add label textarea popover command alert --yes)",
+      "Bash(npm install:*)"
     ]
   }
 }
