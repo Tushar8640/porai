@@ -44,7 +44,7 @@ cd coaching
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and set a strong `NEXTAUTH_SECRET`:
+Edit `.env.local` and set a strong `JWT_SECRET`:
 
 ```bash
 # Generate a secret
@@ -59,7 +59,8 @@ docker compose up -d
 
 This starts:
 - **PostgreSQL 16** on port `5432`
-- **Next.js app** on port `3000` (after running migrations + seed automatically)
+- **Prisma migrator** (one-time schema sync + seed)
+- **Next.js app** on port `3000`
 
 Wait ~30 seconds for the app to initialize, then open [http://localhost:3000](http://localhost:3000).
 
@@ -67,8 +68,8 @@ Wait ~30 seconds for the app to initialize, then open [http://localhost:3000](ht
 
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | `admin@coachinghub.bd` | `admin123` |
-| Demo Center Admin | `demo@dhakacenter.bd` | `demo123` |
+| Super Admin | `superadmin@coachinghub.bd` | `admin123` |
+| Demo Center Admin | `admin@demo.com` | `demo1234` |
 
 > **Change these passwords immediately in production.**
 
@@ -106,8 +107,7 @@ cp .env.example .env.local
 `.env.local` should have:
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/coaching_db?schema=public"
-NEXTAUTH_SECRET="your-generated-secret"
-NEXTAUTH_URL="http://localhost:3000"
+JWT_SECRET="your-generated-secret"
 ```
 
 ### 4. Run migrations and seed
@@ -156,11 +156,11 @@ coaching/
 │   │   ├── attendance/      # AttendanceGrid
 │   │   └── shared/          # ConfirmDialog, LoadingSpinner, etc.
 │   ├── lib/
-│   │   ├── auth.ts          # NextAuth config
+│   │   ├── auth.ts          # JWT session helpers
 │   │   ├── tenant.ts        # getSessionOrg() — org isolation
 │   │   ├── utils.ts         # formatTaka, calculateGrade, etc.
 │   │   └── constants.ts     # Plan limits, BD districts, grading scale
-│   └── middleware.ts        # Auth guard + role-based routing
+│   └── proxy.ts             # Auth guard + role-based routing
 ├── docker-compose.yml       # Full stack (app + PostgreSQL)
 ├── docker-compose.dev.yml   # DB only (for local dev)
 ├── Dockerfile               # Multi-stage production build
@@ -225,8 +225,7 @@ To upgrade a center's plan: log in as Super Admin → Platform Overview → Mana
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `NEXTAUTH_SECRET` | Yes | JWT signing secret (min 32 chars) |
-| `NEXTAUTH_URL` | Yes | App base URL (e.g. `http://localhost:3000`) |
+| `JWT_SECRET` | Yes | JWT signing secret (min 32 chars) |
 | `NEXT_PUBLIC_APP_NAME` | No | Displayed app name (default: CoachingHub BD) |
 | `NEXT_PUBLIC_APP_URL` | No | Public app URL |
 
@@ -251,7 +250,7 @@ To upgrade a center's plan: log in as Super Admin → Platform Overview → Mana
 # On your server
 git clone <repo-url> && cd coaching
 cp .env.example .env.local
-# Edit .env.local with production values and a strong NEXTAUTH_SECRET
+# Edit .env.local with production values and a strong JWT_SECRET
 docker compose up -d
 ```
 

@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16-alpine
+    pull_policy: never
     container_name: coaching_db
     restart: unless-stopped
     environment:
@@ -17,6 +18,19 @@ services:
       timeout: 5s
       retries: 5
 
+  migrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migrator
+    container_name: coaching_migrator
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/coaching_db?schema=public
+
   app:
     build:
       context: .
@@ -24,12 +38,13 @@ services:
     container_name: coaching_app
     restart: unless-stopped
     depends_on:
+      migrator:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/coaching_db?schema=public
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-change-me-in-production-use-openssl-rand-base64-32}
-      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-use-openssl-rand-base64-32}
       NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-CoachingHub BD}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
     ports:

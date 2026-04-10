@@ -38,7 +38,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <MobileSidebar role={role} orgName={orgName} />
           </div>
           <div className="flex-1" />
-          <Topbar userName={name ?? "User"} userEmail={email ?? ""} />
+          <Topbar userName={name ?? "User"} userEmail={email ?? ""} userRole={role} />
         </div>
 
         {/* Subscription expired banner */}

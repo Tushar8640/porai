@@ -1,65 +1,111 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
+import { SignJWT, jwtVerify } from "jose";
+import type { NextRequest } from "next/server";
 import type { Role } from "@/generated/prisma";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma) as any,
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-  },
-  providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+export const AUTH_COOKIE_NAME = "coachinghub_session";
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  organizationId: string | null;
+}
 
-        if (!user || !user.password || !user.isActive) return null;
+interface AuthSession {
+  user: AuthUser;
+}
 
-        const passwordMatch = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
+interface TokenPayload {
+  name: string;
+  email: string;
+  role: Role;
+  organizationId: string | null;
+}
 
-        if (!passwordMatch) return null;
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is missing");
+  }
+  return new TextEncoder().encode(secret);
+}
 
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          organizationId: user.organizationId,
-        };
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.sub = user.id;
-        token.role = (user as { role: Role }).role;
-        token.organizationId = (user as { organizationId: string | null }).organizationId;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token && session.user) {
-        session.user.id = token.sub as string;
-        session.user.role = token.role as Role;
-        session.user.organizationId = token.organizationId as string | null;
-      }
-      return session;
-    },
-  },
-});
+export async function signSessionToken(user: AuthUser) {
+  return new SignJWT({
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    organizationId: user.organizationId,
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setSubject(user.id)
+    .setIssuedAt()
+    .setExpirationTime(`${SESSION_MAX_AGE_SECONDS}s`)
+    .sign(getJwtSecret());
+}
+
+async function verifySessionToken(token: string): Promise<AuthUser | null> {
+  try {
+    const { payload } = await jwtVerify<TokenPayload>(token, getJwtSecret());
+    if (!payload.sub || !payload.email || !payload.role || !payload.name) {
+      return null;
+    }
+
+    return {
+      id: payload.sub,
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+      organizationId: payload.organizationId ?? null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function buildAuthCookie(token: string) {
+  return {
+    name: AUTH_COOKIE_NAME,
+    value: token,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: SESSION_MAX_AGE_SECONDS,
+  };
+}
+
+export function buildClearedAuthCookie() {
+  return {
+    name: AUTH_COOKIE_NAME,
+    value: "",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 0,
+  };
+}
+
+export async function auth(): Promise<AuthSession | null> {
+  const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
+  if (!token) return null;
+
+  const user = await verifySessionToken(token);
+  if (!user) return null;
+
+  return { user };
+}
+
+export async function getAuthFromRequest(request: NextRequest): Promise<AuthSession | null> {
+  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+  if (!token) return null;
+
+  const user = await verifySessionToken(token);
+  if (!user) return null;
+
+  return { user };
+}

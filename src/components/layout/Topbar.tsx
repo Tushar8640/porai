@@ -1,8 +1,8 @@
 "use client";
 
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import type { Role } from "@/generated/prisma";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +16,10 @@ import { LogOut, Settings } from "lucide-react";
 interface TopbarProps {
   userName: string;
   userEmail: string;
+  userRole: Role;
 }
 
-export function Topbar({ userName, userEmail }: TopbarProps) {
+export function Topbar({ userName, userEmail, userRole }: TopbarProps) {
   const router = useRouter();
   const initials = userName
     .split(" ")
@@ -28,8 +29,9 @@ export function Topbar({ userName, userEmail }: TopbarProps) {
     .slice(0, 2);
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
+    await fetch("/api/auth/logout", { method: "POST" });
     router.push("/login");
+    router.refresh();
   };
 
   return (
@@ -47,11 +49,15 @@ export function Topbar({ userName, userEmail }: TopbarProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/settings")}>
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </DropdownMenuItem>
+        {userRole === "CENTER_ADMIN" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => router.push("/settings")}>
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
           <LogOut className="mr-2 h-4 w-4" />

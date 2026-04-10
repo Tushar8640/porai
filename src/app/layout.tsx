@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Hind_Siliguri, Inter } from "next/font/google";
+import { Hind_Siliguri, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const hindSiliguri = Hind_Siliguri({
@@ -26,11 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" className={`${inter.variable} ${hindSiliguri.variable} h-full`}>
+    <html lang="bn" className={`${plusJakartaSans.variable} ${hindSiliguri.variable} h-full`}>
       <body className="min-h-full flex flex-col font-sans antialiased bg-gray-50">
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        {children}
         <Toaster richColors position="top-right" />
       </body>
     </html>

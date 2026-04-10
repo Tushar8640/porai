@@ -30,7 +30,7 @@ COPY --from=builder /app/src/generated ./src/generated
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed || echo 'Seed skipped'"]
+CMD ["sh", "-c", "npx prisma db push && npx tsx prisma/seed.ts || echo 'Seed skipped'"]
 
 # ── Stage 4: Runner (production app only) ─────────────────────────────────────
 FROM node:22-alpine AS runner

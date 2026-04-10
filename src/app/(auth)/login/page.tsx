@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -32,18 +31,26 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
       });
 
-      if (result?.error) {
-        toast.error("Invalid email or password");
-      } else {
-        router.push("/dashboard");
-        router.refresh();
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.error || "Invalid email or password");
+        return;
       }
+
+      router.push("/dashboard");
+      router.refresh();
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {

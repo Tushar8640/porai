@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { SuperAdminLogoutButton } from "@/components/layout/SuperAdminLogoutButton";
 
 export default async function SuperAdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -12,7 +13,10 @@ export default async function SuperAdminLayout({ children }: { children: React.R
           <h1 className="font-bold text-lg">CoachingHub BD — Admin</h1>
           <p className="text-xs text-indigo-200">Super Admin Panel</p>
         </div>
-        <p className="text-sm text-indigo-200">{session.user.email}</p>
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-indigo-200">{session.user.email}</p>
+          <SuperAdminLogoutButton />
+        </div>
       </header>
       <main className="p-6">{children}</main>
     </div>

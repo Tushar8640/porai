@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16-alpine
+    pull_policy: never
     container_name: coaching_db_dev
     restart: unless-stopped
     environment:
