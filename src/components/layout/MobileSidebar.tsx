@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 import type { Role } from "@/generated/prisma";
@@ -17,10 +16,8 @@ export function MobileSidebar({ role, orgName }: MobileSidebarProps) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
-          <Menu className="h-5 w-5" />
-        </Button>
+      <SheetTrigger className="lg:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+        <Menu className="h-5 w-5" />
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-64">
         <Sidebar role={role} orgName={orgName} onNavigate={() => setOpen(false)} />

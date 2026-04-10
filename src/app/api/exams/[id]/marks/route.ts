@@ -56,7 +56,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
     const parsed = schema.safeParse(body);
-    if (!parsed.success) return apiError(parsed.error.errors[0].message, 422);
+    if (!parsed.success) return apiError(parsed.error.issues[0].message, 422);
 
     await Promise.all(
       parsed.data.results.map(r => {

@@ -49,7 +49,7 @@ export function SettingsForm({ org, districts }: { org: OrgData; districts: stri
           </div>
           <div className="space-y-2">
             <Label>District</Label>
-            <Select onValueChange={v => setValue("district", v)} defaultValue={org.district}>
+            <Select onValueChange={(v) => setValue("district", v ?? "")} defaultValue={org.district}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>{districts.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
             </Select>

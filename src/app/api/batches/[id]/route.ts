@@ -42,7 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     const body = await req.json();
     const parsed = batchSchema.safeParse(body);
-    if (!parsed.success) return apiError(parsed.error.errors[0].message, 422);
+    if (!parsed.success) return apiError(parsed.error.issues[0].message, 422);
 
     const { teacherId, subject, schedule, ...rest } = parsed.data;
     const batch = await prisma.batch.update({

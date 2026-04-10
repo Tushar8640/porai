@@ -28,8 +28,9 @@ export default function NewBatchPage() {
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState<{ id: string; name: string }[]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
   });
 
   useEffect(() => {
@@ -79,7 +80,7 @@ export default function NewBatchPage() {
             {teachers.length > 0 && (
               <div className="space-y-2">
                 <Label>Assign Teacher</Label>
-                <Select onValueChange={(v) => setValue("teacherId", v)}>
+                <Select onValueChange={(v: string | null) => setValue("teacherId", v ?? undefined)}>
                   <SelectTrigger><SelectValue placeholder="Select teacher (optional)" /></SelectTrigger>
                   <SelectContent>
                     {teachers.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}

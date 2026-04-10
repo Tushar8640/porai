@@ -5,7 +5,16 @@
       "Bash(npx --version)",
       "Bash(npx shadcn@latest add card table input select dialog badge form dropdown-menu sheet avatar separator tabs skeleton sonner --yes)",
       "Bash(npx shadcn@latest add label textarea popover command alert --yes)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npx tsc:*)",
+      "Bash(cat \"D:\\\\\\\\self\\\\\\\\coaching\\\\\\\\node_modules\\\\\\\\@base-ui\\\\\\\\react\\\\\\\\menu\\\\\\\\trigger\\\\\\\\index.d.ts\")",
+      "Bash(powershell:*)",
+      "Bash(npm list:*)",
+      "Bash(Select-String \"onValueChange|Value\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(docker compose:*)"
     ]
   }
 }

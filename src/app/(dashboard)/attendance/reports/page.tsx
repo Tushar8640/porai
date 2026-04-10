@@ -48,7 +48,7 @@ export default function AttendanceReportsPage() {
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-2 min-w-48">
               <Label>Batch</Label>
-              <Select value={batchId} onValueChange={setBatchId}>
+              <Select value={batchId} onValueChange={(v) => setBatchId(v ?? "")}>
                 <SelectTrigger><SelectValue placeholder="Select batch" /></SelectTrigger>
                 <SelectContent>
                   {batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}

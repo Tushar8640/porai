@@ -42,8 +42,8 @@ export default async function SettingsPage() {
                 <Badge className={sub?.status === "ACTIVE" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}>{sub?.status ?? "ACTIVE"}</Badge>
               </div>
               <div className="text-sm text-gray-600 space-y-1">
-                <p>Monthly Fee: <strong>{formatTaka(PLAN_PRICES[sub?.plan ?? "FREE"])}</strong></p>
-                <p>Student Limit: <strong>{PLAN_STUDENT_LIMITS[sub?.plan ?? "FREE"] === Infinity ? "Unlimited" : PLAN_STUDENT_LIMITS[sub?.plan ?? "FREE"]}</strong></p>
+                <p>Monthly Fee: <strong>{formatTaka(PLAN_PRICES[(sub?.plan ?? "FREE") as keyof typeof PLAN_PRICES])}</strong></p>
+                <p>Student Limit: <strong>{PLAN_STUDENT_LIMITS[(sub?.plan ?? "FREE") as keyof typeof PLAN_STUDENT_LIMITS] === Infinity ? "Unlimited" : PLAN_STUDENT_LIMITS[(sub?.plan ?? "FREE") as keyof typeof PLAN_STUDENT_LIMITS]}</strong></p>
                 <p>Current Students: <strong>{studentCount}</strong></p>
                 {sub?.endDate && <p>Valid Until: <strong>{new Date(sub.endDate).toLocaleDateString("en-GB")}</strong></p>}
               </div>

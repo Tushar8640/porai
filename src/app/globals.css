@@ -128,3 +128,15 @@
     @apply font-sans;
   }
 }
+
+/* Print styles */
+@media print {
+  @page { size: A4; margin: 20mm; }
+  nav, header, .print-hidden { display: none !important; }
+  body { background: white !important; }
+}
+
+/* Bengali font support */
+:root {
+  --font-bengali: var(--font-hind-siliguri), sans-serif;
+}

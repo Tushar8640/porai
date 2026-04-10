@@ -124,7 +124,7 @@ export default function FeesPage() {
       </div>
 
       <div className="flex flex-wrap gap-3 mb-4">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v ?? "")}>
           <SelectTrigger className="w-36"><SelectValue placeholder="All Status" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="">All Status</SelectItem>
@@ -136,7 +136,7 @@ export default function FeesPage() {
         </Select>
         <input type="month" value={monthFilter} onChange={e => setMonthFilter(e.target.value)}
           className="border border-gray-200 rounded-md px-3 py-2 text-sm" />
-        <Select value={batchFilter} onValueChange={setBatchFilter}>
+        <Select value={batchFilter} onValueChange={(v) => setBatchFilter(v ?? "")}>
           <SelectTrigger className="w-48"><SelectValue placeholder="All Batches" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="">All Batches</SelectItem>
@@ -207,7 +207,7 @@ export default function FeesPage() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Batch</Label>
-              <Select value={genBatch} onValueChange={setGenBatch}>
+              <Select value={genBatch} onValueChange={(v) => setGenBatch(v ?? "")}>
                 <SelectTrigger><SelectValue placeholder="Select batch" /></SelectTrigger>
                 <SelectContent>{batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name} (৳{b.monthlyFee})</SelectItem>)}</SelectContent>
               </Select>
@@ -238,7 +238,7 @@ export default function FeesPage() {
             </div>
             <div className="space-y-2">
               <Label>Payment Method</Label>
-              <Select value={collectMethod} onValueChange={setCollectMethod}>
+              <Select value={collectMethod} onValueChange={(v) => setCollectMethod(v ?? "CASH")}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="CASH">Cash</SelectItem>

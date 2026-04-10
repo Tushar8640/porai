@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StudentTable } from "@/components/students/StudentTable";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
-import { UserPlus, Search } from "lucide-react";
+import { UserPlus, Search, Download } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
 
 interface Batch { id: string; name: string }
@@ -41,6 +41,9 @@ export default function StudentsPage() {
   return (
     <div>
       <PageHeader title="Students" description="Manage all enrolled students">
+        <Button variant="outline" onClick={() => window.open("/api/export/students", "_blank")}>
+          <Download className="mr-2 h-4 w-4" />Export CSV
+        </Button>
         <Link href="/students/new">
           <Button><UserPlus className="mr-2 h-4 w-4" />Add Student</Button>
         </Link>
@@ -51,7 +54,7 @@ export default function StudentsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input className="pl-9" placeholder="Search by name..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
-        <Select value={batchFilter} onValueChange={setBatchFilter}>
+        <Select value={batchFilter} onValueChange={(v) => setBatchFilter(v ?? "")}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="All batches" />
           </SelectTrigger>

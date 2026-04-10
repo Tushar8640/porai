@@ -19,8 +19,9 @@ export default function NewExamPage() {
   const [loading, setLoading] = useState(false);
   const [batches, setBatches] = useState<{ id: string; name: string }[]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<ExamFormData>({
-    resolver: zodResolver(examSchema),
+    resolver: zodResolver(examSchema) as any,
     defaultValues: { totalMarks: 100, passMark: 33 },
   });
 
@@ -54,7 +55,7 @@ export default function NewExamPage() {
             </div>
             <div className="space-y-2">
               <Label>Batch *</Label>
-              <Select onValueChange={v => setValue("batchId", v)}>
+              <Select onValueChange={(v: string | null) => setValue("batchId", v ?? "")}>
                 <SelectTrigger><SelectValue placeholder="Select batch" /></SelectTrigger>
                 <SelectContent>{batches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}</SelectContent>
               </Select>

@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const organizationId = await getSessionOrg();
     const body = await req.json();
     const parsed = batchSchema.safeParse(body);
-    if (!parsed.success) return apiError(parsed.error.errors[0].message, 422);
+    if (!parsed.success) return apiError(parsed.error.issues[0].message, 422);
 
     const { name, subject, schedule, teacherId, monthlyFee } = parsed.data;
 

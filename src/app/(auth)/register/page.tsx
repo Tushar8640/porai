@@ -75,7 +75,7 @@ export default function RegisterPage() {
 
               <div className="space-y-2">
                 <Label>District *</Label>
-                <Select onValueChange={(val) => setValue("district", val)} defaultValue={watch("district")}>
+                <Select onValueChange={(val) => setValue("district", val ?? "")} defaultValue={watch("district") ?? ""}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select district" />
                   </SelectTrigger>

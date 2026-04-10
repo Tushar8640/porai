@@ -3,7 +3,6 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,18 +34,16 @@ export function Topbar({ userName, userEmail }: TopbarProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2 h-auto py-2">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-indigo-100 text-indigo-700 text-sm font-semibold">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div className="text-left hidden sm:block">
-            <p className="text-sm font-medium text-gray-900">{userName}</p>
-            <p className="text-xs text-gray-500">{userEmail}</p>
-          </div>
-        </Button>
+      <DropdownMenuTrigger className="flex items-center gap-2 h-auto py-2 px-3 rounded-md hover:bg-gray-100 focus:outline-none">
+        <Avatar className="h-8 w-8">
+          <AvatarFallback className="bg-indigo-100 text-indigo-700 text-sm font-semibold">
+            {initials}
+          </AvatarFallback>
+        </Avatar>
+        <div className="text-left hidden sm:block">
+          <p className="text-sm font-medium text-gray-900">{userName}</p>
+          <p className="text-xs text-gray-500">{userEmail}</p>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

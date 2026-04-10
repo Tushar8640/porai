@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     });
 
     const parsed = schema.safeParse(body);
-    if (!parsed.success) return apiError(parsed.error.errors[0].message, 422);
+    if (!parsed.success) return apiError(parsed.error.issues[0].message, 422);
 
     const { batchId, date, records } = parsed.data;
     const dateObj = new Date(date);

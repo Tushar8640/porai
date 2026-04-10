@@ -26,7 +26,7 @@ export function StudentForm({ defaultValues, isEdit }: StudentFormProps) {
   const [selectedBatches, setSelectedBatches] = useState<string[]>(defaultValues?.batchIds ?? []);
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<StudentFormData>({
-    resolver: zodResolver(studentSchema),
+    resolver: zodResolver(studentSchema) as any,
     defaultValues: {
       gender: "MALE",
       batchIds: [],

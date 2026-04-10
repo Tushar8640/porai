@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import type { Role } from "@/generated/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
@@ -47,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.sub = user.id;
         token.role = (user as { role: Role }).role;
         token.organizationId = (user as { organizationId: string | null }).organizationId;
       }
@@ -55,7 +55,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        session.user.id = token.sub as string;
         session.user.role = token.role as Role;
         session.user.organizationId = token.organizationId as string | null;
       }

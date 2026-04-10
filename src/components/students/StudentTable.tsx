@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -93,17 +92,15 @@ export function StudentTable({ students, onDelete }: StudentTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
+                    <DropdownMenuTrigger className="inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-gray-100 focus:outline-none">
+                      <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem asChild>
-                        <Link href={`/students/${s.id}`}><Eye className="mr-2 h-4 w-4" />View Profile</Link>
+                      <DropdownMenuItem onClick={() => router.push(`/students/${s.id}`)}>
+                        <Eye className="mr-2 h-4 w-4" />View Profile
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/students/${s.id}/edit`}><Pencil className="mr-2 h-4 w-4" />Edit</Link>
+                      <DropdownMenuItem onClick={() => router.push(`/students/${s.id}/edit`)}>
+                        <Pencil className="mr-2 h-4 w-4" />Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600" onClick={() => setDeleteId(s.id)}>
                         <Trash2 className="mr-2 h-4 w-4" />Deactivate
