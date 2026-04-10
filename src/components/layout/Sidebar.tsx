@@ -50,7 +50,7 @@ export function Sidebar({ role, orgName, onNavigate }: SidebarProps) {
   return (
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col h-full">
       <div className="px-6 py-5 border-b border-gray-200">
-        <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">CoachingHub BD</p>
+        <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Porai</p>
         <h2 className="text-sm font-bold text-gray-900 mt-1 truncate">{orgName}</h2>
       </div>
 
@@ -78,7 +78,7 @@ export function Sidebar({ role, orgName, onNavigate }: SidebarProps) {
       </nav>
 
       <div className="px-3 py-3 border-t border-gray-200">
-        <p className="text-xs text-gray-400 text-center">CoachingHub BD v1.0</p>
+        <p className="text-xs text-gray-400 text-center">Porai v1.0</p>
       </div>
     </aside>
   );

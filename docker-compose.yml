@@ -45,7 +45,7 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/coaching_db?schema=public
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-use-openssl-rand-base64-32}
-      NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-CoachingHub BD}
+      NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Porai}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
     ports:
       - "3000:3000"

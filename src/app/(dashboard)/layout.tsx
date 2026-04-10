@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       })
     : null;
 
-  const orgName = org?.name ?? "CoachingHub BD";
+  const orgName = org?.name ?? "Porai";
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">

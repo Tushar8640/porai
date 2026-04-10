@@ -1,4 +1,4 @@
-# CoachingHub BD
+# Porai
 
 A multi-tenant SaaS platform for coaching centers in Bangladesh. Each coaching center gets an isolated dashboard to manage students, attendance, fees, and exam results.
 
@@ -226,7 +226,7 @@ To upgrade a center's plan: log in as Super Admin → Platform Overview → Mana
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | PostgreSQL connection string |
 | `JWT_SECRET` | Yes | JWT signing secret (min 32 chars) |
-| `NEXT_PUBLIC_APP_NAME` | No | Displayed app name (default: CoachingHub BD) |
+| `NEXT_PUBLIC_APP_NAME` | No | Displayed app name (default: Porai) |
 | `NEXT_PUBLIC_APP_URL` | No | Public app URL |
 
 ---

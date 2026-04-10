@@ -126,7 +126,7 @@ export default function InvoicePage() {
 
         <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between text-xs text-gray-400">
           <span>Issued by: {org.name}</span>
-          <span>CoachingHub BD</span>
+          <span>Porai</span>
         </div>
       </div>
 

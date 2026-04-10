@@ -16,7 +16,7 @@ const hindSiliguri = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  title: "CoachingHub BD",
+  title: "Porai",
   description: "Coaching center management system for Bangladesh",
 };
 
